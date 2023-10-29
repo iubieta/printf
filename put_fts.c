@@ -6,7 +6,7 @@
 /*   By: iubieta- <iubieta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 17:27:27 by iubieta-          #+#    #+#             */
-/*   Updated: 2023/10/27 18:29:11 by iubieta-         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:13:03 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,48 @@ void	ft_putstr(char *s)
 	i = 0;
 	while (s[i])
 	{
-		write(1, &s[i], sizeof(char));
+		write(1, &s[i++], sizeof(char));
 	}
 }
 
-void	ft_puthex(unsigned long n)
+void	ft_putnbr(long n)
 {
-	char			*h_digits;
-	char			*h_value;
-	int				i;
-	unsigned long	j;
-	
-	h_digits = "0123456789abcdfg";
-	j = 0;	
-	while (n > 16)
+	if (n == 0)
+		ft_putchar('0');	
+	else if (n < 0)
 	{
-		i = n / 16;
-		h_value[j] = h_digits[i];
-		n = n % 16;
-		j++;
+		ft_putchar('-');
+		ft_putnbr(n * (-1));
 	}
-	h_value[j] = h_digits[n];
-	ft_putstr(h_value);
+	else if (n < 10)
+		ft_putchar(n + '0');
+	else
+	{
+		ft_putnbr(n / 10);
+		ft_putchar(n % 10 + '0');
+	}
+}
+
+void	ft_puthex(unsigned long n, char mayus)
+{
+	char	*h_digits;
+	int		i;
+	
+	if (mayus == 0)
+		h_digits = "0123456789abcdef";
+	else if (mayus == 1)
+		h_digits = "0123456789ABCDEF";
+	else return ;
+	if (n < 16)
+	{
+		i = n % 16;
+		ft_putchar(h_digits[i]);
+	}
+	else
+	{
+		ft_puthex(n / 16, mayus);
+		i = n % 16;
+		ft_putchar(h_digits[i]);
+	}
+		
 }
