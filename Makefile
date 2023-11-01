@@ -18,8 +18,8 @@ CFLAGS = -Wall -Werror -Wextra
 AR = ar csr
 RM = rm -rf
 
-all : ${NAME}
-	${AR} $^
+all : ${OBJS}
+	${AR} ${NAME} $^
 
 ${NAME} : ${OBJS}
 	${AR} ${NAME} $^
