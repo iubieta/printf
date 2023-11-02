@@ -6,66 +6,75 @@
 /*   By: iubieta- <iubieta-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 17:27:27 by iubieta-          #+#    #+#             */
-/*   Updated: 2023/10/30 18:19:29 by iubieta-         ###   ########.fr       */
+/*   Updated: 2023/11/02 16:21:01 by iubieta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
-void	ft_putchar(char c)
+int	ft_putchar(char c)
 {
-	write(1,&c,1);
+	return (write(1, &c, 1));
 }
 
-void	ft_putstr(char *s)
+int	ft_putstr(char *s)
 {
-	unsigned long	i;
-	
-	i = 0;
-	while (s[i])
-	{
-		write(1, &s[i++], sizeof(char));
-	}
+	int	len;
+
+	len = 0;
+	if (!s)
+		len += write(1, "(null)", 6);
+	else
+		while (*s)
+			len += write(1, s++, 1);
+	return (len);
 }
 
-void	ft_putnbr(long n)
+int	ft_putnbr(long n)
 {
+	int	len;
+
+	len = 0;
 	if (n == 0)
-		ft_putchar('0');	
+		len += ft_putchar('0');
 	else if (n < 0)
 	{
-		ft_putchar('-');
-		ft_putnbr(n * (-1));
+		len += ft_putchar('-');
+		len += ft_putnbr(n * (-1));
 	}
 	else if (n < 10)
-		ft_putchar(n + '0');
+		len += ft_putchar(n + '0');
 	else
 	{
-		ft_putnbr(n / 10);
-		ft_putchar(n % 10 + '0');
+		len += ft_putnbr(n / 10);
+		len += ft_putchar(n % 10 + '0');
 	}
+	return (len);
 }
 
-void	ft_puthex(unsigned long n, char mayus)
+int	ft_puthex(unsigned long n, char mayus)
 {
 	char	*h_digits;
 	int		i;
-	
+	int		len;
+
+	len = 0;
 	if (mayus == 0)
 		h_digits = "0123456789abcdef";
 	else if (mayus == 1)
 		h_digits = "0123456789ABCDEF";
-	else return ;
+	else
+		return (0);
 	if (n < 16)
 	{
 		i = n % 16;
-		ft_putchar(h_digits[i]);
+		len += ft_putchar(h_digits[i]);
 	}
 	else
 	{
-		ft_puthex(n / 16, mayus);
+		len += ft_puthex(n / 16, mayus);
 		i = n % 16;
-		ft_putchar(h_digits[i]);
+		len += ft_putchar(h_digits[i]);
 	}
-		
+	return (len);
 }
